@@ -64,6 +64,7 @@ BSP_DONT_REMOVE BSP_PLACE_IN_SECTION(BSP_SECTION_APPLICATION_VECTORS)
 const fsp_vector_t g_vector_table[BSP_ICU_VECTOR_MAX_ENTRIES] = {
     [0] = usbfs_interrupt_handler, /* USBFS INT (USBFS interrupt) */
     [1] = usbfs_resume_handler,    /* USBFS RESUME (USBFS resume interrupt) */
+#ifndef CORTEX_M23  
     [2] = usbfs_d0fifo_handler,    /* USBFS FIFO 0 (DMA transfer request 0) */
     [3] = usbfs_d1fifo_handler,    /* USBFS FIFO 1 (DMA transfer request 1) */
 
@@ -72,6 +73,7 @@ const fsp_vector_t g_vector_table[BSP_ICU_VECTOR_MAX_ENTRIES] = {
     [5] = usbhs_d0fifo_handler,    /* USBHS FIFO 0 (DMA transfer request 0) */
     [6] = usbhs_d1fifo_handler,    /* USBHS FIFO 1 (DMA transfer request 1) */
 #endif
+#endif  
 };
 
 const bsp_interrupt_event_t g_interrupt_event_link_select[BSP_ICU_VECTOR_MAX_ENTRIES] = {
