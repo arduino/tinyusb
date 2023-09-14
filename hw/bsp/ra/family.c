@@ -64,24 +64,25 @@ BSP_DONT_REMOVE BSP_PLACE_IN_SECTION(BSP_SECTION_APPLICATION_VECTORS)
 const fsp_vector_t g_vector_table[BSP_ICU_VECTOR_MAX_ENTRIES] = {
     [0] = usbfs_interrupt_handler, /* USBFS INT (USBFS interrupt) */
     [1] = usbfs_resume_handler,    /* USBFS RESUME (USBFS resume interrupt) */
-#ifndef CORTEX_M23  
+#ifndef RENESAS_CORTEX_M23
     [2] = usbfs_d0fifo_handler,    /* USBFS FIFO 0 (DMA transfer request 0) */
     [3] = usbfs_d1fifo_handler,    /* USBFS FIFO 1 (DMA transfer request 1) */
-
+#endif  
 #ifdef BOARD_HAS_USB_HIGHSPEED
     [4] = usbhs_interrupt_handler, /* USBHS INT (USBHS interrupt) */
     [5] = usbhs_d0fifo_handler,    /* USBHS FIFO 0 (DMA transfer request 0) */
     [6] = usbhs_d1fifo_handler,    /* USBHS FIFO 1 (DMA transfer request 1) */
 #endif
-#endif  
+
 };
 
 const bsp_interrupt_event_t g_interrupt_event_link_select[BSP_ICU_VECTOR_MAX_ENTRIES] = {
     [0] = BSP_PRV_IELS_ENUM(EVENT_USBFS_INT),            /* USBFS INT (USBFS interrupt) */
     [1] = BSP_PRV_IELS_ENUM(EVENT_USBFS_RESUME),         /* USBFS RESUME (USBFS resume interrupt) */
+#ifndef RENESAS_CORTEX_M23
     [2] = BSP_PRV_IELS_ENUM(EVENT_USBFS_FIFO_0),         /* USBFS FIFO 0 (DMA transfer request 0) */
     [3] = BSP_PRV_IELS_ENUM(EVENT_USBFS_FIFO_1),         /* USBFS FIFO 1 (DMA transfer request 1) */
-
+#endif
 #ifdef BOARD_HAS_USB_HIGHSPEED
     [4] = BSP_PRV_IELS_ENUM(EVENT_USBHS_USB_INT_RESUME), /* USBHS USB INT RESUME (USBHS interrupt) */
     [5] = BSP_PRV_IELS_ENUM(EVENT_USBHS_FIFO_0),         /* USBHS FIFO 0 (DMA transfer request 0) */
@@ -94,6 +95,8 @@ const bsp_interrupt_event_t g_interrupt_event_link_select[BSP_ICU_VECTOR_MAX_ENT
 //--------------------------------------------------------------------+
 
 void board_init(void) {
+
+
   // Enable global interrupts in CPSR register since board with bootloader such as Arduino Uno R4
   // can transfer CPU control with CPSR.I bit set to 0 (disable IRQ)
   __enable_irq();
@@ -131,6 +134,11 @@ void board_init_after_tusb(void) {
 #if defined(BOARD_UNO_R4)
   R_USB_FS0->USBMC |= R_USB_FS0_USBMC_VDCEN_Msk;
 #endif
+
+#ifdef RENESAS_CORTEX_M23
+  ((R_USB_FS0_Type*)R_USB_FS0_BASE)->USBMC_b.VDCEN = 1;
+  ((R_USB_FS0_Type*)R_USB_FS0_BASE)->SYSCFG_b.DPRPU = 1;
+#endif    
 }
 
 void board_led_write(bool state) {
