@@ -31,13 +31,16 @@
 extern "C" {
 #endif
 
-#define LED1                  BSP_IO_PORT_01_PIN_11 // D13
-#define LED_STATE_ON  1
+#define LED_SELECT            BSP_IO_PORT_00_PIN_14
+
+#define LED1                  BSP_IO_PORT_03_PIN_01 // D13
+#define LED_STATE_ON         1
 
 #define SW1                   BSP_IO_PORT_01_PIN_10 // D12
 #define BUTTON_STATE_ACTIVE   0
 
 static const ioport_pin_cfg_t board_pin_cfg[] = {
+    {.pin = LED_SELECT, .pin_cfg = IOPORT_CFG_PORT_DIRECTION_OUTPUT},
     {.pin = LED1, .pin_cfg = IOPORT_CFG_PORT_DIRECTION_OUTPUT},
     {.pin = BSP_IO_PORT_09_PIN_14, .pin_cfg = IOPORT_CFG_PERIPHERAL_PIN | IOPORT_PERIPHERAL_USB_FS},
     {.pin = BSP_IO_PORT_09_PIN_15, .pin_cfg = IOPORT_CFG_PERIPHERAL_PIN | IOPORT_PERIPHERAL_USB_FS},
