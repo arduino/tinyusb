@@ -32,7 +32,7 @@ extern "C" {
 #endif
 
 #define LED1                  BSP_IO_PORT_04_PIN_00 // D13
-#define LED_STATE_ON  1
+#define LED_STATE_ON          0
 
 #define SW1                   BSP_IO_PORT_03_PIN_01 // D12
 #define BUTTON_STATE_ACTIVE   0
