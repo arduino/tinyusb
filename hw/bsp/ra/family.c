@@ -126,6 +126,8 @@ void board_init(void) {
   SysTick_Config(SystemCoreClock / 1000);
 #endif
 
+
+
   board_led_write(false);
 }
 
@@ -143,6 +145,11 @@ void board_init_after_tusb(void) {
 
 void board_led_write(bool state) {
   R_IOPORT_PinWrite(&port_ctrl, LED1, state ? LED_STATE_ON : !LED_STATE_ON);
+  
+  /* Used on "muxto" bootloader to select a particular led colum */
+  #ifdef LED_SELECT
+  R_IOPORT_PinWrite(&port_ctrl, LED_SELECT, LED_STATE_ON);
+  #endif
 }
 
 uint32_t board_button_read(void) {
