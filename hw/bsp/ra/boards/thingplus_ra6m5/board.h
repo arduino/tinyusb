@@ -21,24 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * This file is part of the TinyUSB stack.
  */
 
-#ifndef _BOARD_CFG_H
-#define _BOARD_CFG_H
+#ifndef _BOARD_H_
+#define _BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#if defined(BSP_MCU_GROUP_RA6M5) || defined(BSP_MCU_GROUP_RA6M3) || (BSP_CFG_MCU_PART_SERIES == 8)
-#ifndef BSP_MCU_R7FA6M5AH3CFP
-  #define BOARD_HAS_USB_HIGHSPEED
-#endif // !BSP_MCU_R7FA6M5AH3CFP
-#endif
+#define LED1                  BSP_IO_PORT_01_PIN_06 // Blue STAT LED
+#define LED_STATE_ON          1
 
-// for SystemInit()
-void bsp_init(void * p_args);
+#define SW1                   BSP_IO_PORT_04_PIN_15 // D31
+#define BUTTON_STATE_ACTIVE   0
 
+static const ioport_pin_cfg_t board_pin_cfg[] = {
+    { .pin = LED1, .pin_cfg = IOPORT_CFG_PORT_DIRECTION_OUTPUT | IOPORT_CFG_PORT_OUTPUT_LOW },
+    { .pin = SW1, .pin_cfg = IOPORT_CFG_PORT_DIRECTION_INPUT },
+
+    // USB FS
+    { .pin = BSP_IO_PORT_04_PIN_07, .pin_cfg = IOPORT_CFG_PERIPHERAL_PIN | IOPORT_PERIPHERAL_USB_FS | IOPORT_CFG_DRIVE_HIGH },
+    { .pin = BSP_IO_PORT_05_PIN_00, .pin_cfg = IOPORT_CFG_PERIPHERAL_PIN | IOPORT_PERIPHERAL_USB_FS | IOPORT_CFG_DRIVE_HIGH },
+    { .pin = BSP_IO_PORT_05_PIN_01, .pin_cfg = IOPORT_CFG_PERIPHERAL_PIN | IOPORT_PERIPHERAL_USB_FS | IOPORT_CFG_DRIVE_HIGH },
+};
 
 #ifdef __cplusplus
 }
