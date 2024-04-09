@@ -7,6 +7,6 @@ LD_FILE = ${BOARD_PATH}/${BOARD}.ld
 PORT ?= 0
 
 JLINK_DEVICE = R7FA6M5AH
-DFU_UTIL_OPTION = -d 2341:0068 -a 0
+DFU_UTIL_OPTION = -d 1b4f:0036 -a 0
 
 flash: flash-dfu-util
